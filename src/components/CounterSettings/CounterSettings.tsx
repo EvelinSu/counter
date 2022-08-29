@@ -36,7 +36,11 @@ const CounterSettings: FC<TCounterSettingsProps> = ({
 
     useEffect(() => {
         validator()
-    },[(newMinCount | newMaxCount)])
+    },[newMinCount])
+
+    useEffect(() => {
+        validator()
+    },[newMaxCount])
 
 
 
