@@ -33,8 +33,14 @@ export const Text = styled.span<TTextProps>(({isMaxValue, ...props}) => ({
     ...isMaxValue && {
         color: "#c97171",
         transition: "0.2s",
-
         transform: "scale(2)"
     }
+}))
 
+export const AbsoluteButton = styled.span((props) => ({
+    opacity: 0.6,
+    cursor: "pointer",
+    position: "absolute",
+
+    top: 650
 }))

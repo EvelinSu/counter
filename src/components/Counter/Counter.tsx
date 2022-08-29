@@ -5,19 +5,19 @@ import CounterBoard from "./CounterBoard";
 import Button from "../Button/Button";
 import {Flex} from "../../styled";
 
-const Counter: FC<TCounterProps> = ({count, minCount, maxCount, error, resetCount, incCount}) => {
+const Counter: FC<TCounterProps> = ({count, minCount, maxCount, error, resetCount, incCount, notice}) => {
     return (
         <SCounter>
-            <CounterBoard error={error} count={count} maxCount={maxCount} />
+            <CounterBoard notice={notice} error={error} count={count} maxCount={maxCount} />
             <Flex>
                 <Button
                     label="inc"
-                    isDisabled={error ? true : count === maxCount}
+                    isDisabled={!!error || !!notice || count === maxCount}
                     callback={incCount}
                 />
                 <Button
                     label="reset"
-                    isDisabled={error ? true : (count === minCount)}
+                    isDisabled={!!error || !!notice || (count === minCount)}
                     callback={resetCount}
                 />
             </Flex>

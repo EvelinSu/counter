@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import Button from "../Button/Button";
 import {Flex} from "../../styled";
 import {TCounterProps, TCounterSettingsProps} from "../Counter/types";
@@ -13,40 +13,40 @@ const CounterSettings: FC<TCounterSettingsProps> = ({
     setCount,
     setMinCount,
     setMaxCount,
+    setNotice,
+    error
 }) => {
 
     const [newMinCount, setNewMinCount] = useState<number>(minCount)
     const [newMaxCount, setNewMaxCount] = useState<number>(maxCount)
 
     const validator = () => {
-        if (newMinCount < 0) {
-            setError(`start value can't be less than 0`)
-            return false
-        } else if (newMaxCount < 0) {
-            setError(`max value can't be less than 0`)
-            return false
-        } else if (newMinCount > newMaxCount) {
-            setError(`start value can't be more than max value`)
-            return false
-        } else {
-            return true
+        if (newMinCount < 0) return setError(`start value can't be less than 0`)
+        if (newMaxCount > 100) return setError(`value can't be more than 100`)
+        if (newMaxCount < 0) return setError(`max value can't be less than 0`)
+        if (newMinCount > newMaxCount) return setError(`start value can't be more than max value`)
+        if ((newMinCount !== minCount) || (newMaxCount !== maxCount)) {
+            console.log('aaaa')
+            setError('')
+            return setNotice('enter values and press "set"')
         }
+        setError('')
+        setNotice('')
     }
 
-    if (newMinCount !== minCount || newMaxCount !== maxCount) {
-        setError('enter values and press "set"')
+    useEffect(() => {
         validator()
-    }
+    },[(newMinCount | newMaxCount)])
+
+
 
     const changeCounts = () => {
-        if (validator()) {
-            setError('')
-            setMinCount(newMinCount)
-            setMaxCount(newMaxCount)
-            setCount(newMinCount)
-            localStorage.setItem('minCount', JSON.stringify(newMinCount))
-            localStorage.setItem('maxCount', JSON.stringify(newMaxCount))
-        }
+        setNotice('')
+        setMinCount(newMinCount)
+        setMaxCount(newMaxCount)
+        setCount(newMinCount)
+        localStorage.setItem('minCount', JSON.stringify(newMinCount))
+        localStorage.setItem('maxCount', JSON.stringify(newMaxCount))
     }
 
     return (
@@ -60,7 +60,7 @@ const CounterSettings: FC<TCounterSettingsProps> = ({
             <Flex>
                 <Button
                     label="set"
-                    isDisabled={!validator() || (minCount === newMinCount && maxCount === newMaxCount)}
+                    isDisabled={!!error || (minCount === newMinCount && maxCount === newMaxCount)}
                     callback={changeCounts}
                 />
             </Flex>

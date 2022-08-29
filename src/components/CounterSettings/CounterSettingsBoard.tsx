@@ -7,30 +7,31 @@ const CounterSettingsBoard: FC<TCounterSettingsBoardProps> = ({
     newMinCount,
     setNewMaxCount,
     newMaxCount,
-    setNewMinCount
+    setNewMinCount,
 }) => {
 
     const maxCountHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setNewMaxCount(+e.currentTarget.value)
+        setNewMaxCount(Math.round(+e.currentTarget.value))
     }
     const minCountHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setNewMinCount(+e.currentTarget.value)
+        setNewMinCount(Math.round(+e.currentTarget.value))
     }
 
+    const replaceNulls = (value: number) => String(value).replace(/^0.+/, '')
 
     return (
         <SCounterBoard>
-            <SCounterBoardRows invalidValue={newMaxCount < 0 || newMaxCount < newMinCount}>
+            <SCounterBoardRows invalidValue={newMaxCount < 0 || newMaxCount < newMinCount || newMaxCount > 100}>
                 <Text fontSize={'18px'}>
                     max value:
                 </Text>
-                <input type={"number"} value={newMaxCount} onChange={maxCountHandler} />
+                <input type={"number"} value={replaceNulls(newMaxCount)} onChange={maxCountHandler}/>
             </SCounterBoardRows>
-            <SCounterBoardRows invalidValue={newMinCount < 0 || newMinCount > newMaxCount}>
+            <SCounterBoardRows invalidValue={newMinCount < 0 || newMinCount > newMaxCount || newMinCount > 100}>
                 <Text fontSize={'18px'}>
                     start value:
                 </Text>
-                <input type={"number"} value={newMinCount} onChange={minCountHandler} />
+                <input type={"number"} value={replaceNulls(newMinCount)} onChange={minCountHandler} />
             </SCounterBoardRows>
         </SCounterBoard>
     );

@@ -5,12 +5,14 @@ export type TCounterProps = {
     resetCount: () => void
     incCount: () => void
     error: string
+    notice: string
 }
 
 export type TCounterBoardProps = {
     count: number,
     error: string
     maxCount: number
+    notice: string
 }
 
 export type TCounterSettingsProps = {
@@ -21,6 +23,7 @@ export type TCounterSettingsProps = {
     setMaxCount: (count: number) => void
     setCount: (count: number) => void
     setError: (text: string) => void
+    setNotice: (text: string) => void
 }
 
 export type TCounterSettingsBoardProps = {
