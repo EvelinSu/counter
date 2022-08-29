@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import Counter from "./components/Counter/Counter";
+import {SWrapper} from "./styled";
+import CounterSettings from "./components/CounterSettings/CounterSettings";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const getFromLocalStorage = (key: string) => {
+        let value = localStorage.getItem(key)
+        return value && JSON.parse(value)
+    }
+
+    const [maxCount, setMaxCount] = useState<number>(getFromLocalStorage('maxCount') || 5)
+    const [minCount, setMinCount] = useState<number>(getFromLocalStorage('minCount') || 0)
+    const [count, setCount] = useState<number>(minCount)
+    const [error, setError] = useState<string>('')
+    const resetCount = () => setCount(minCount)
+    const incCount = () => count < maxCount && setCount(count + 1)
+
+    return (
+        <SWrapper>
+            <CounterSettings
+                minCount={minCount}
+                maxCount={maxCount}
+                setError={setError}
+                error={error}
+                setMinCount={setMinCount}
+                setMaxCount={setMaxCount}
+                setCount={setCount}
+            />
+            <Counter
+                minCount={minCount}
+                maxCount={maxCount}
+                count={count}
+                error={error}
+                resetCount={resetCount}
+                incCount={incCount}
+            />
+        </SWrapper>
+    );
 }
 
 export default App;
