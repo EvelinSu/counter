@@ -10,6 +10,7 @@ export const SWrapper = styled.div(props => ({
     height: "100vh",
     width: "100vw",
     color: "#fff",
+    position: "relative",
 }))
 
 export const Flex = styled.div((props) => ({
@@ -41,6 +42,5 @@ export const AbsoluteButton = styled.span((props) => ({
     opacity: 0.6,
     cursor: "pointer",
     position: "absolute",
-
-    top: 650
+    top: "80%",
 }))

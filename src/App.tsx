@@ -4,7 +4,6 @@ import Counter from "./components/Counter/Counter";
 import {AbsoluteButton, SWrapper} from "./styled";
 import CounterSettings from "./components/CounterSettings/CounterSettings";
 
-
 const initialCountState = {
     min: 0,
     max: 5,
@@ -16,12 +15,10 @@ const initialCountState = {
 function App() {
     const getFromLocalStorage = (key: string) => {
         let value = localStorage.getItem(key)
-        if (value) {
-            return JSON.parse(value)
-        }
+        if (value) return JSON.parse(value)
     }
 
-    const [ count, setCount ] = useState<typeof initialCountState>({
+    const [count, setCount] = useState<typeof initialCountState>({
         max: getFromLocalStorage('maxCount') || initialCountState.max,
         min: getFromLocalStorage('minCount') || initialCountState.min,
         current: getFromLocalStorage('minCount') || initialCountState.min,
@@ -30,12 +27,12 @@ function App() {
     })
 
     const resetCount = () => {
-        setCount((el) => ({...el, current: count.min }));
+        setCount((el) => ({...el, current: count.min}));
     }
 
     const incCount = () => {
-        const { current, max } = count;
-        setCount((el) => ({...el, current: current + 1 }))
+        const {current, max} = count;
+        setCount((el) => ({...el, current: current + 1}))
     }
 
     const globalReset = () => {
@@ -44,24 +41,30 @@ function App() {
         window.location.reload()
     }
 
+    const setError = (error: string) => setCount((el) => ({...el, error}))
+    const setNotice = (notice: string) => setCount((el) => ({...el, notice}))
+    const setMinCount = (min: number) => setCount((el) => ({...el, min}))
+    const setMaxCount = (max: number) => setCount((el) => ({...el, max}))
+    const setCountValue = (current: number) => setCount((el) => ({...el, current}))
+
     return (
         <SWrapper>
             <CounterSettings
                 minCount={count.min}
                 maxCount={count.max}
-                error={ count.error }
-                setNotice={(notice) => setCount((el) => ({...el, notice }))}
-                setError={ (error) => setCount((el) => ({...el, error })) }
-                setMinCount={ (min) => setCount((el) => ({...el,  min})) }
-                setMaxCount={ (max) => setCount((el) => ({...el, max })) }
-                setCount={ (current) => setCount((el) => ({...el, current })) }
+                error={count.error}
+                setNotice={setNotice}
+                setError={setError}
+                setMinCount={setMinCount}
+                setMaxCount={setMaxCount}
+                setCount={setCountValue}
             />
             <Counter
-                minCount={ count.min }
-                maxCount={ count.max }
-                count={ count.current }
-                error={ count.error }
-                notice={ count.notice }
+                minCount={count.min}
+                maxCount={count.max}
+                count={count.current}
+                error={count.error}
+                notice={count.notice}
                 resetCount={resetCount}
                 incCount={incCount}
             />

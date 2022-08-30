@@ -26,7 +26,6 @@ const CounterSettings: FC<TCounterSettingsProps> = ({
         if (newMaxCount < 0) return setError(`max value can't be less than 0`)
         if (newMinCount > newMaxCount) return setError(`start value can't be more than max value`)
         if ((newMinCount !== minCount) || (newMaxCount !== maxCount)) {
-            console.log('aaaa')
             setError('')
             return setNotice('enter values and press "set"')
         }
@@ -36,13 +35,7 @@ const CounterSettings: FC<TCounterSettingsProps> = ({
 
     useEffect(() => {
         validator()
-    },[newMinCount])
-
-    useEffect(() => {
-        validator()
-    },[newMaxCount])
-
-
+    }, [newMinCount, newMaxCount])
 
     const changeCounts = () => {
         setNotice('')

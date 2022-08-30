@@ -21,11 +21,11 @@ const CounterSettingsBoard: FC<TCounterSettingsBoardProps> = ({
 
     return (
         <SCounterBoard>
-            <SCounterBoardRows invalidValue={newMaxCount < 0 || newMaxCount < newMinCount || newMaxCount > 100}>
+            <SCounterBoardRows invalidValue={newMaxCount < 0 || newMinCount > newMaxCount || newMaxCount > 100}>
                 <Text fontSize={'18px'}>
                     max value:
                 </Text>
-                <input type={"number"} value={replaceNulls(newMaxCount)} onChange={maxCountHandler}/>
+                <input type={"number"} value={replaceNulls(newMaxCount)} onChange={maxCountHandler} />
             </SCounterBoardRows>
             <SCounterBoardRows invalidValue={newMinCount < 0 || newMinCount > newMaxCount || newMinCount > 100}>
                 <Text fontSize={'18px'}>

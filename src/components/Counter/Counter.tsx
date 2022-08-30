@@ -17,7 +17,7 @@ const Counter: FC<TCounterProps> = ({count, minCount, maxCount, error, resetCoun
                 />
                 <Button
                     label="reset"
-                    isDisabled={!!error || !!notice || (count === minCount)}
+                    isDisabled={!!error || !!notice || count === minCount}
                     callback={resetCount}
                 />
             </Flex>
