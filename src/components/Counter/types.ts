@@ -21,7 +21,6 @@ export type TCounterSettingsProps = {
     error: string
     setMinCount: (count: number) => void
     setMaxCount: (count: number) => void
-    setCount: (count: number) => void
     setError: (text: string) => void
     setNotice: (text: string) => void
 }

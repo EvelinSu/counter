@@ -1,16 +1,14 @@
 import React, {FC, useEffect, useState} from 'react';
 import Button from "../Button/Button";
 import {Flex} from "../../styled";
-import {TCounterProps, TCounterSettingsProps} from "../Counter/types";
+import {TCounterSettingsProps} from "../Counter/types";
 import {SCounter} from "../Counter/styled";
 import CounterSettingsBoard from "./CounterSettingsBoard";
-import {v1} from "uuid";
 
 const CounterSettings: FC<TCounterSettingsProps> = ({
     setError,
     minCount,
     maxCount,
-    setCount,
     setMinCount,
     setMaxCount,
     setNotice,
@@ -41,7 +39,6 @@ const CounterSettings: FC<TCounterSettingsProps> = ({
         setNotice('')
         setMinCount(newMinCount)
         setMaxCount(newMaxCount)
-        setCount(newMinCount)
         localStorage.setItem('minCount', JSON.stringify(newMinCount))
         localStorage.setItem('maxCount', JSON.stringify(newMaxCount))
     }

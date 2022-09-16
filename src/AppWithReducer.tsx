@@ -1,10 +1,18 @@
-import React, {useState} from 'react';
+import {useReducer} from "react";
+import {counterReducer} from "./redux/countValuesReducer";
 import './App.css';
 import Counter from "./components/Counter/Counter";
 import {AbsoluteButton, SWrapper} from "./styled";
 import CounterSettings from "./components/CounterSettings/CounterSettings";
+import {
+    changeErrorAC,
+    changeMaxValueAC,
+    changeMinValueAC, changeNoticeAC,
+    incCurrentValueAC,
+    resetCurrentValueAC
+} from "./redux/countValuesReducer";
 
-const initialCountState = {
+export const initialCountState = {
     min: 0,
     max: 5,
     current: 0,
@@ -18,7 +26,7 @@ function App() {
         if (value) return JSON.parse(value)
     }
 
-    const [count, setCount] = useState<typeof initialCountState>({
+    const [count, dispatchCount] = useReducer(counterReducer, {
         max: getFromLocalStorage('maxCount') || initialCountState.max,
         min: getFromLocalStorage('minCount') || initialCountState.min,
         current: getFromLocalStorage('minCount') || initialCountState.min,
@@ -27,22 +35,21 @@ function App() {
     })
 
     const resetCount = () => {
-        setCount((el) => ({...el, current: count.min}));
+        dispatchCount(resetCurrentValueAC())
     }
     const incCount = () => {
-        const {current, max} = count;
-        setCount((el) => ({...el, current: current + 1}))
+        dispatchCount(incCurrentValueAC())
     }
     const globalReset = () => {
-        setCount(initialCountState);
+        dispatchCount(changeMinValueAC(initialCountState.min))
+        dispatchCount(changeMaxValueAC(initialCountState.max))
         localStorage.clear()
         window.location.reload()
     }
-
-    const setError = (error: string) => setCount((el) => ({...el, error}))
-    const setNotice = (notice: string) => setCount((el) => ({...el, notice}))
-    const setMinCount = (min: number) => setCount((el) => ({...el, min}))
-    const setMaxCount = (max: number) => setCount((el) => ({...el, max}))
+    const setError = (error: string) => dispatchCount(changeErrorAC(error))
+    const setNotice = (notice: string) => dispatchCount(changeNoticeAC(notice))
+    const setMinCount = (min: number) => dispatchCount(changeMinValueAC(min))
+    const setMaxCount = (max: number) => dispatchCount(changeMaxValueAC(max))
 
     return (
         <SWrapper>
