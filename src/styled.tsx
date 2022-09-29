@@ -11,6 +11,7 @@ export const SWrapper = styled.div(props => ({
     width: "100vw",
     color: "#fff",
     position: "relative",
+    minWidth: 800,
 }))
 
 export const Flex = styled.div((props) => ({

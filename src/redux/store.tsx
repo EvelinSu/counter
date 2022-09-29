@@ -10,13 +10,9 @@ const rootReducer = combineReducers({
 export const store = createStore(rootReducer)
 
 
-export type TRootState = {
-    min: number,
-    max: number,
-    current: number,
-    notice: string,
-    error: string
-}
+
 export type TReduxStore = typeof store
+
+export type TRootState = ReturnType<typeof store.getState>
 
 export default store

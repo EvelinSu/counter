@@ -1,5 +1,18 @@
-import {TRootState} from "./store";
-import {initialCountState} from "../AppWithReducer";
+
+export type TCounter = {
+    min: number,
+    max: number,
+    current: number,
+    error: string,
+    notice: string,
+}
+export const initialCountState = {
+    min: 0,
+    max: 5,
+    current: 0,
+    error: "",
+    notice: "",
+}
 
 type TActions = ReturnType<typeof changeMinValueAC>
                 | ReturnType<typeof changeMaxValueAC>
@@ -8,7 +21,7 @@ type TActions = ReturnType<typeof changeMinValueAC>
                 | ReturnType<typeof changeNoticeAC>
                 | ReturnType<typeof changeErrorAC>
 
-export const counterReducer = (state: TRootState = initialCountState, action: TActions): TRootState => {
+export const counterReducer = (state: TCounter = initialCountState, action: TActions): TCounter => {
     switch (action.type) {
         case "CHANGE-MIN":
             return {...state, min: action.newMinValue, current: action.newMinValue}

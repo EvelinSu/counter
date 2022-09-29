@@ -1,23 +1,40 @@
 import React, {FC, useState} from 'react';
 import {SCounter} from "./styled";
-import {TCounterProps} from "./types";
 import CounterBoard from "./CounterBoard";
 import Button from "../Button/Button";
 import {Flex} from "../../styled";
+import {incCurrentValueAC, resetCurrentValueAC, TCounter} from "../../redux/countValuesReducer";
+import {useDispatch, useSelector} from "react-redux";
+import {TRootState} from "../../redux/store";
 
-const Counter: FC<TCounterProps> = ({count, minCount, maxCount, error, resetCount, incCount, notice}) => {
+type TCounterProps = {
+
+}
+
+const Counter: FC<TCounterProps> = (props) => {
+
+    const state = useSelector<TRootState, TCounter>(state => state.counter)
+    const dispatch = useDispatch()
+
+    const resetCount = () => {
+        dispatch(resetCurrentValueAC())
+    }
+    const incCount = () => {
+        dispatch(incCurrentValueAC())
+    }
+
     return (
         <SCounter>
-            <CounterBoard notice={notice} error={error} count={count} maxCount={maxCount} />
+            <CounterBoard notice={state.notice} error={state.error} count={state.current} maxCount={state.max} />
             <Flex>
                 <Button
                     label="inc"
-                    isDisabled={!!error || !!notice || count === maxCount}
+                    isDisabled={!!state.error || !!state.notice || state.current === state.max}
                     callback={incCount}
                 />
                 <Button
                     label="reset"
-                    isDisabled={!!error || !!notice || count === minCount}
+                    isDisabled={!!state.error || !!state.notice || state.current === state.min}
                     callback={resetCount}
                 />
             </Flex>

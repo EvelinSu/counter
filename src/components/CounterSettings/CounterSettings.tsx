@@ -1,34 +1,39 @@
 import React, {FC, useEffect, useState} from 'react';
 import Button from "../Button/Button";
 import {Flex} from "../../styled";
-import {TCounterSettingsProps} from "../Counter/types";
 import {SCounter} from "../Counter/styled";
 import CounterSettingsBoard from "./CounterSettingsBoard";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    changeErrorAC,
+    changeMaxValueAC,
+    changeMinValueAC,
+    changeNoticeAC,
+    TCounter
+} from "../../redux/countValuesReducer";
+import {TRootState} from "../../redux/store";
 
-const CounterSettings: FC<TCounterSettingsProps> = ({
-    setError,
-    minCount,
-    maxCount,
-    setMinCount,
-    setMaxCount,
-    setNotice,
-    error
-}) => {
+type TCounterSettingsProps = {}
 
-    const [newMinCount, setNewMinCount] = useState<number>(minCount)
-    const [newMaxCount, setNewMaxCount] = useState<number>(maxCount)
+const CounterSettings: FC<TCounterSettingsProps> = ({}) => {
+
+    const state = useSelector<TRootState, TCounter>(state => state.counter)
+    const dispatch = useDispatch()
+
+    const [newMinCount, setNewMinCount] = useState<number>(state.min)
+    const [newMaxCount, setNewMaxCount] = useState<number>(state.max)
 
     const validator = () => {
-        if (newMinCount < 0) return setError(`start value can't be less than 0`)
-        if (newMaxCount > 100) return setError(`value can't be more than 100`)
-        if (newMaxCount < 0) return setError(`max value can't be less than 0`)
-        if (newMinCount > newMaxCount) return setError(`start value can't be more than max value`)
-        if ((newMinCount !== minCount) || (newMaxCount !== maxCount)) {
-            setError('')
-            return setNotice('enter values and press "set"')
+        if (newMinCount < 0) return dispatch(changeErrorAC(`start value can't be less than 0`))
+        if (newMaxCount > 100) return dispatch(changeErrorAC(`value can't be more than 100`))
+        if (newMaxCount < 0) return dispatch(changeErrorAC(`max value can't be less than 0`))
+        if (newMinCount > newMaxCount) return dispatch(changeErrorAC(`start value can't be more than max value`))
+        if ((newMinCount !== state.min) || (newMaxCount !== state.max)) {
+            dispatch(changeErrorAC(''))
+            return dispatch(changeNoticeAC('enter values and press "set"'))
         }
-        setError('')
-        setNotice('')
+        dispatch(changeErrorAC(''))
+        dispatch(changeNoticeAC(''))
     }
 
     useEffect(() => {
@@ -36,9 +41,9 @@ const CounterSettings: FC<TCounterSettingsProps> = ({
     }, [newMinCount, newMaxCount])
 
     const changeCounts = () => {
-        setNotice('')
-        setMinCount(newMinCount)
-        setMaxCount(newMaxCount)
+        dispatch(changeNoticeAC(''))
+        dispatch(changeMinValueAC(newMinCount))
+        dispatch(changeMaxValueAC(newMaxCount))
         localStorage.setItem('minCount', JSON.stringify(newMinCount))
         localStorage.setItem('maxCount', JSON.stringify(newMaxCount))
     }
@@ -54,7 +59,7 @@ const CounterSettings: FC<TCounterSettingsProps> = ({
             <Flex>
                 <Button
                     label="set"
-                    isDisabled={!!error || (minCount === newMinCount && maxCount === newMaxCount)}
+                    isDisabled={!!state.error || (state.min === newMinCount && state.max === newMaxCount)}
                     callback={changeCounts}
                 />
             </Flex>
