@@ -31,7 +31,10 @@ function App() {
             )}
             <CounterSettings />
             <Counter />
-            <AbsoluteButton onClick={globalReset}>
+            <AbsoluteButton
+                title={"reset local storage"}
+                onClick={globalReset}
+            >
                 reset everything!!!!
             </AbsoluteButton>
         </SWrapper>

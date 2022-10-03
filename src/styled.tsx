@@ -36,7 +36,7 @@ export const Flex = styled.div((props) => ({
     padding: 10,
     margin: 10,
     border: `2px dashed ${primaryColor}`,
-    borderRadius: 15,
+    borderRadius: 20,
 }))
 
 type TTextProps = {
@@ -58,4 +58,8 @@ export const AbsoluteButton = styled.span((props) => ({
     cursor: "pointer",
     position: "absolute",
     top: "80%",
+    transition: "0.2s",
+    "&:hover": {
+        transform: "scale(1.1)",
+    }
 }))

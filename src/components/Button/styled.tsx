@@ -5,7 +5,7 @@ import {primaryColor} from "../Counter/styled";
 export const SButton = styled.button<TSButtonProps>(({disabled}) => ({
     padding: "5px 15px",
     backgroundColor: primaryColor,
-    borderRadius: 10,
+    borderRadius: 15,
     outline: "none",
     width: "100%",
     border: "none",

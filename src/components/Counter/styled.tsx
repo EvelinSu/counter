@@ -1,4 +1,4 @@
-import styled, {keyframes} from "styled-components";
+import styled from "styled-components";
 import {TSCounterBoardProps} from "./types";
 
 export const primaryColor = "#4e7fc0"
@@ -7,7 +7,7 @@ export const SCounter = styled.div((props) => ({
     display: "flex",
     flexDirection: "column",
     border: `1px solid ${primaryColor}`,
-    borderRadius: 15,
+    borderRadius: 20,
     width: 230,
 }))
 
@@ -18,7 +18,7 @@ export const SCounterBoard = styled.div<TSCounterBoardProps>(({isMaxCount}) => (
     alignItems: "center",
     padding: 10,
     textAlign: "center",
-    borderRadius: 15,
+    borderRadius: 20,
     margin: "10px 10px 0 10px",
     height: 150,
     backgroundColor: primaryColor,
@@ -26,7 +26,7 @@ export const SCounterBoard = styled.div<TSCounterBoardProps>(({isMaxCount}) => (
         width: 50,
         textAlign: "center",
         height: 30,
-        borderRadius: 10,
+        borderRadius: 15,
         border: "none",
         "&:focus": {
             outline: "2px solid rgba(0, 0, 0, 0.4)",
