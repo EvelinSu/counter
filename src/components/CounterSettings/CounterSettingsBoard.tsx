@@ -1,7 +1,7 @@
 import React, {ChangeEvent, FC} from 'react';
-import {TCounterBoardProps, TCounterSettingsBoardProps} from "../Counter/types";
+import { TCounterSettingsBoardProps} from "../Counter/types";
 import {SCounterBoard, SCounterBoardRows} from "../Counter/styled";
-import {Flex, Text} from "../../styled";
+import {Text} from "../../styled";
 
 const CounterSettingsBoard: FC<TCounterSettingsBoardProps> = ({
     newMinCount,
@@ -11,23 +11,26 @@ const CounterSettingsBoard: FC<TCounterSettingsBoardProps> = ({
 }) => {
 
     const maxCountHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setNewMaxCount(Math.round(+e.currentTarget.value))
+        const value = +e.currentTarget.value
+        if (value <= 1000 && value >= 0) setNewMaxCount(Math.round(value))
     }
     const minCountHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setNewMinCount(Math.round(+e.currentTarget.value))
+        const value = +e.currentTarget.value
+        if (value <= 1000 && value >= 0) setNewMinCount(Math.round(value))
     }
 
     const replaceNulls = (value: number) => String(value).replace(/^0.+/, '')
+    // P.S. да, я знаю, что можно сделать это с помощью String(), но я не доверяю цыганским фокусам..........
 
     return (
         <SCounterBoard>
-            <SCounterBoardRows invalidValue={newMaxCount < 0 || newMinCount > newMaxCount || newMaxCount > 100}>
+            <SCounterBoardRows invalidValue={newMinCount > newMaxCount || newMinCount === newMaxCount}>
                 <Text fontSize={'18px'}>
                     max value:
                 </Text>
                 <input type={"number"} value={replaceNulls(newMaxCount)} onChange={maxCountHandler} />
             </SCounterBoardRows>
-            <SCounterBoardRows invalidValue={newMinCount < 0 || newMinCount > newMaxCount || newMinCount > 100}>
+            <SCounterBoardRows invalidValue={newMinCount > newMaxCount || newMinCount === newMaxCount}>
                 <Text fontSize={'18px'}>
                     start value:
                 </Text>

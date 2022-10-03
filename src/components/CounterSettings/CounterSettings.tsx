@@ -5,28 +5,44 @@ import {SCounter} from "../Counter/styled";
 import CounterSettingsBoard from "./CounterSettingsBoard";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    changeErrorAC,
+    changeErrorAC, changeLoadingStatusAC,
     changeMaxValueAC,
     changeMinValueAC,
-    changeNoticeAC,
+    changeNoticeAC, getValuesFromStorageThunk,
     TCounter
 } from "../../redux/countValuesReducer";
-import {TRootState} from "../../redux/store";
+import {AppDispatch, TRootState} from "../../redux/store";
 
 type TCounterSettingsProps = {}
 
-const CounterSettings: FC<TCounterSettingsProps> = ({}) => {
+export const useAppDispatch = () => useDispatch<AppDispatch>()
 
+const CounterSettings: FC<TCounterSettingsProps> = () => {
+    const dispatch = useAppDispatch()
     const state = useSelector<TRootState, TCounter>(state => state.counter)
-    const dispatch = useDispatch()
 
     const [newMinCount, setNewMinCount] = useState<number>(state.min)
     const [newMaxCount, setNewMaxCount] = useState<number>(state.max)
 
+    useEffect(() => {
+        dispatch(changeLoadingStatusAC(true))
+        dispatch(getValuesFromStorageThunk())
+            .then((response) => {
+                if(response){
+                    setNewMinCount(response.min);
+                    setNewMaxCount(response.max);
+                }
+            })
+            .catch(() => {})
+            .finally(() => {
+                setTimeout(() => {
+                    dispatch(changeLoadingStatusAC(false))
+                }, 500)
+            })
+    }, []);
+
     const validator = () => {
-        if (newMinCount < 0) return dispatch(changeErrorAC(`start value can't be less than 0`))
-        if (newMaxCount > 100) return dispatch(changeErrorAC(`value can't be more than 100`))
-        if (newMaxCount < 0) return dispatch(changeErrorAC(`max value can't be less than 0`))
+        if (newMinCount === newMaxCount) return dispatch(changeErrorAC(`start and max value can't be equal`))
         if (newMinCount > newMaxCount) return dispatch(changeErrorAC(`start value can't be more than max value`))
         if ((newMinCount !== state.min) || (newMaxCount !== state.max)) {
             dispatch(changeErrorAC(''))
@@ -35,17 +51,16 @@ const CounterSettings: FC<TCounterSettingsProps> = ({}) => {
         dispatch(changeErrorAC(''))
         dispatch(changeNoticeAC(''))
     }
-
     useEffect(() => {
         validator()
     }, [newMinCount, newMaxCount])
 
+    // если прошла вся валидация, отправляем значения в стор и локал сторедж
     const changeCounts = () => {
         dispatch(changeNoticeAC(''))
         dispatch(changeMinValueAC(newMinCount))
         dispatch(changeMaxValueAC(newMaxCount))
-        localStorage.setItem('minCount', JSON.stringify(newMinCount))
-        localStorage.setItem('maxCount', JSON.stringify(newMaxCount))
+        localStorage.setItem('values', JSON.stringify([newMinCount, newMaxCount]))
     }
 
     return (
