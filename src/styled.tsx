@@ -1,6 +1,20 @@
 import styled from "styled-components";
 import {primaryColor} from "./components/Counter/styled";
 
+export const SPageLoading = styled.div(props => ({
+    position: "fixed",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#2b3552",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+
+}))
+
 export const SWrapper = styled.div(props => ({
     backgroundColor: "#2b3552",
     display: "flex",
